@@ -1,0 +1,209 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Gabor Szalai CV</title>
+  <script src="https://cdn.zoomcharts-cloud.com/1/18/latest/zoomcharts.js"></script>
+  <script src="https://kit.fontawesome.com/03de3eada3.js" crossorigin="anonymous"></script>
+</head>
+
+<style>
+html {background-color: black;
+}
+
+#popup {
+		position:absolute;
+		display:none;
+    background-color: #154559ff;
+		color: white;
+    border: 1px solid #39bcf3;
+    padding: 1px;
+    z-index: 99;
+    box-shadow: 3px 3px 3px #227192;
+		min-width: 100px;
+    max-width: 300px;
+		min-height: 50px;
+		padding:20px;
+    font-size: 12px;
+		font-family: "Calibri";
+	}
+
+li {  font-size: 15px;
+  font-family: "Calibri";}
+#demo {
+  height: 100%;
+  width: 100%;
+}
+.bold {
+color: #FF4081;
+font-weight: bold;
+
+}
+</style>
+
+<body>
+  <div id="demo"></div>
+  <div id="popup">
+        <h2><i class="fas fa-user-astronaut"></i>&nbsp;Core Skills</h2>
+        <ul class="fa-ul">
+          <li><span class="fa-li"><i class="fas fa-rocket"></i></span><span class="bold">Experienced product manager</span> with a passion to create innovative products that deliver meaningful value to their users.</li>
+          <br>
+          <li><span class="fa-li"><i class="fas fa-meteor"></i></span>Proven track record in managing the <span class="bold">full delivery-cycle of solutions</span>, including the technical research and specification, user-experience design, development management, testing, documentation and product training/evangelist roles.</li>
+          <br>
+          <li><span class="fa-li"><i class="fas fa-satellite-dish"></i></span><span class="bold">Effective communicator</span> who can navigate the rocky straits between measuring client needs and turning them into straightforward requirements that developers can execute on.</li>
+          <br>
+          <li><span class="fa-li"><i class="fas fa-diagnoses"></i></span><span class="bold">Tinkerer by nature</span> always on the lookout for new technologies, but also a generalist who thinks in practical applicability.</li>
+          <br>
+          <li><span class="fa-li"><i class="fas fa-chart-line"></i></span>Particularly interested in data science/analytics and <span class="bold">big believer in data-informed decision-making</span>.</li>
+        </ul>
+  </div>
+  <script>
+
+  nodes_data=[{"id":"GS","size":null,"color":null,"label":"Gabor Szalai","popup_info":'<i class="fas fa-brain"></i>I am an experienced product manager with a passion to create innovative products that deliver meaningful value to their users. I have a proven track record in managing the full delivery-cycle of solutions, including the technical research and specification, user-experience design, development management, testing, documentation and product training/evangelist roles. I am an effective communicator who can navigate the rocky straits between measuring client requirements and turning them into straightforward and detailed technical designs that developers can execute. My key strength lies in being able to combine the perspectives and skill-sets of software developers and match these with the needs of the business end-users. I am a tinkerer by nature always on the lookout for new technologies, but also a generalist who thinks in practical applicability. I am particularly interested in data science/analytics -  a field where I seek to widen my knowledge through active self-learning.',"image":".\/img\/GS_profile.jpg"},{"id":"Education","size":null,"color":null,"label":"Education","popup_info":null,"image":".\/img\/certificate.png"}];
+
+
+  links_data=[{"from":"GS","to":"Education"}];
+
+  var nodeIdForPopup = null;
+
+  var t = new NetChart({
+    container: document.getElementById("demo"),
+    area: {height: 600,
+    },
+    navigation: {
+      mode: "focusnodes",
+      numberOfFocusNodes : 50,
+      focusNodeExpansionRadius: 2,
+      initialNodes: ["GS","Education"]
+
+    },
+    style: {
+      node: {
+        fillColor: "#000000",
+        shadowBlur: 6,
+        shadowColor: "rgba(0,0,0,0.4)",
+        shadowOffsetX: 0,
+        shadowOffsetY: 2,
+        radius: 100,
+        display: "image",
+        imageCropping: false
+      },
+      nodeLabel: {
+        borderRadius: 2,
+        aspectRatio: 0,
+        padding: 2,
+        textStyle: {
+          fillColor: "white"
+        },
+      },
+      link: {
+        fillColor : "#B9B9B9"
+      },
+      nodeStyleFunction: function(node) {
+        node.image = node.data.image;
+        if (node.id == 'GS') {
+          node.imageSlicing = [0,0,1200,1200];
+          node.radius = 100}
+        else {node.imageSlicing = [0,0,500,500]
+          node.radius=70;}
+        node.labelStyle.backgroundStyle.fillColor = '#39444d';
+
+        node.items = [
+          {
+            text: node.data.id,
+            aspectRatio: 0, //force single line
+            px: 0, py: -1, x: 0, y: -5,
+            textStyle: { fillColor: "white" },
+            backgroundStyle: {
+              fillColor: "#09c",
+              lineColor: "transparent"
+            }
+          }
+        ];
+        node.label = node.data.label
+      },
+      nodeFocused: {
+        fillColor: "#000000"
+      },
+      linkStyleFunction: function(link) {
+        link.fillColor = "gray"
+        ;
+      },
+    },
+    data: {
+      preloaded:{
+        nodes: nodes_data,
+        links: links_data
+      }
+    },
+    layout: {
+      mode: "hierarchy",
+      nodeSpacing: 100, // horizontal spacing between nodes
+      groupSpacing: 80,
+      rowSpacing: 120, // vertical spacing between node rows in the hierarchy layout
+    },
+    interaction: {
+      zooming: {
+        initialAutoZoom : "true",
+        autoZoomExtent: [0.7, 0.7]}
+      },
+    events: {
+			onClick: function(e, args) {
+				if(args.clickNode) {
+					nodeIdForPopup = args.clickNode;
+          popup_text = args.clickNode.data.popup_info;
+				} else {
+					nodeIdForPopup = null;
+				}
+				update(e);
+			},
+			onPositionChange: update,
+			onPointerDrag: update,
+			onChartUpdate: update,
+			onSettingsChange: update
+		},
+    theme: NetChart.themes.dark
+      });
+
+      setTimeout(function() {
+    		update();
+    	},300)
+
+    	function update(e) {
+
+    		var popup = document.getElementById("popup");
+    		if(!nodeIdForPopup || popup_text === null) {
+    			if(!(popup.offsetWidth === 0 && popup.offsetHeight === 0)) {
+    				popup.style.display = "none";
+    			}
+    			return;
+    		}
+    		//get latest node clicked/dragged or initial one
+    		var nodeId = nodeIdForPopup;
+
+    		/*
+    		//if other node clicked/dragged:
+    		if(e && e.clickNode) {
+    			nodeId = e.clickNode.id;
+    			//update nodeId to the latest node clicked/dragged
+    			nodeIdForPopup = nodeId;
+    		}*/
+
+    			var dimensions = t.getNodeDimensions(nodeId);
+    		if(!dimensions || !nodeId) {
+    			return;
+    		}
+
+    		var container = document.getElementById("demo");
+    		var off_top = container.offsetTop;
+    		var off_left = container.offsetLeft;
+
+    		//updte popup position and show it if it's hidden.
+    		popup.style.top = off_top + 10  + "px";
+    		popup.style.left = off_left + 10 + "px";
+    		popup.style.display = "block";
+
+        //popup.innerHTML = popup_text;
+    	}
+      </script>
+    </body>
+    </html>
