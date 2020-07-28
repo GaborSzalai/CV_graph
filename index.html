@@ -31,10 +31,10 @@ font-weight: bold;
     padding-bottom: 20;
     z-index: 99;
     box-shadow: 3px 3px 3px #227192;
-		min-width: 100px;
+		min-width: 20%;
     max-width: 300px;
 		min-height: 50px;
-    font-size: 12px;
+    font-size: 1vw;
 		font-family: "Calibri";
 	}
 
@@ -65,6 +65,7 @@ li {  font-size: 15px;
 
   var t = new NetChart({
     container: document.getElementById("demo"),
+
     navigation: {
       mode: "focusnodes",
       numberOfFocusNodes : 50,
@@ -159,7 +160,9 @@ li {  font-size: 15px;
     interaction: {
       zooming: {
         initialAutoZoom : "true",
-        autoZoomExtent: [0.6, 0.6]}
+        autoZoomExtent: [0.6, 0.6]
+      },
+      nodesMovable : false
       },
     events: {
 			onClick: function(e, args) {
